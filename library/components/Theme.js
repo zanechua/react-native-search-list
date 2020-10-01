@@ -1,15 +1,15 @@
-'use strict';
+'use strict'
 import {
   Dimensions,
   Platform,
   StatusBar
-} from 'react-native';
+} from 'react-native'
 
 const statusBarHeight = Platform.select({
   android: StatusBar.currentHeight,
   // TODO 这里不要写死值
   ios: Platform.OS === 'ios' && parseInt((Dimensions.get('window').height / Dimensions.get('window').width) * 100) === 216 ? 44 : 20
-});
+})
 export default {
   color: {
     primary: '#171a23',
@@ -41,4 +41,4 @@ export default {
   duration: {
     toggleSearchBar: 300
   }
-};
+}

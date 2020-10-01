@@ -1,4 +1,4 @@
 {
     "parser": "babel-eslint",
-    "extends": ["semistandard-react"]
+    "extends": ["standard", "standard-jsx"]
 }

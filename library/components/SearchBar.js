@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 import {
   View,
   Text,
@@ -7,13 +7,13 @@ import {
   TouchableWithoutFeedback,
   Animated,
   StyleSheet
-} from 'react-native';
-import React, { Component } from 'react';
+} from 'react-native'
+import React, { Component } from 'react'
 
-import PropTypes from 'prop-types';
-import Theme from './Theme';
+import PropTypes from 'prop-types'
+import Theme from './Theme'
 
-const {cancelButtonWidth: buttonWidth, searchBarHorizontalPadding, searchIconWidth} = Theme.size;
+const { cancelButtonWidth: buttonWidth, searchBarHorizontalPadding, searchIconWidth } = Theme.size
 
 export default class SearchBar extends Component {
   static propTypes = {
@@ -66,67 +66,67 @@ export default class SearchBar extends Component {
   }
 
   constructor (props) {
-    super(props);
+    super(props)
     this.state = {
       value: props.defaultValue,
       isSearching: props.defaultValue !== '',
       animatedValue: new Animated.Value(0)
-    };
+    }
 
-    this.onFocus = this.onFocus.bind(this);
-    this.onBlur = this.onBlur.bind(this);
-    this.onSubmitEditing = this.onSubmitEditing.bind(this);
-    this.onChange = this.onChange.bind(this);
-    this.cancelSearch = this.cancelSearch.bind(this);
+    this.onFocus = this.onFocus.bind(this)
+    this.onBlur = this.onBlur.bind(this)
+    this.onSubmitEditing = this.onSubmitEditing.bind(this)
+    this.onChange = this.onChange.bind(this)
+    this.cancelSearch = this.cancelSearch.bind(this)
   }
 
   onChange (value) {
-    this.props.onChange && this.props.onChange(value);
-    this.setState({value: value});
+    this.props.onChange && this.props.onChange(value)
+    this.setState({ value: value })
   }
 
   onBlur () {
-    this.props.onBlur && this.props.onBlur();
+    this.props.onBlur && this.props.onBlur()
   }
 
   onFocus () {
-    this.searchingAnimation(true);
-    this.props.onFocus && this.props.onFocus();
+    this.searchingAnimation(true)
+    this.props.onFocus && this.props.onFocus()
   }
 
   onSubmitEditing () {
     if (this.state.value === '') {
-      this.cancelSearch();
+      this.cancelSearch()
     }
 
-    this.props.onSubmitEditing && this.props.onSubmitEditing();
+    this.props.onSubmitEditing && this.props.onSubmitEditing()
   }
 
   searchingAnimation (isSearching) {
-    let toVal = 0;
+    let toVal = 0
 
     if (isSearching) {
-      this.state.animatedValue.setValue(0);
-      toVal = buttonWidth;
+      this.state.animatedValue.setValue(0)
+      toVal = buttonWidth
     } else {
-      this.state.animatedValue.setValue(buttonWidth);
-      toVal = 0;
+      this.state.animatedValue.setValue(buttonWidth)
+      toVal = 0
     }
 
     Animated.timing(this.state.animatedValue, {
       duration: Theme.duration.toggleSearchBar,
       toValue: toVal
     }).start(() => {
-      this.setState({isSearching: isSearching});
-    });
+      this.setState({ isSearching: isSearching })
+    })
   }
 
   cancelSearch () {
-    this.refs.input.clear();
-    this.refs.input.blur();
-    this.setState({value: '', isSearching: false});
-    this.searchingAnimation(false);
-    this.props.onClickCancel && this.props.onClickCancel();
+    this.refs.input.clear()
+    this.refs.input.blur()
+    this.setState({ value: '', isSearching: false })
+    this.searchingAnimation(false)
+    this.props.onClickCancel && this.props.onClickCancel()
   }
 
   render () {
@@ -144,7 +144,8 @@ export default class SearchBar extends Component {
             width: Theme.size.windowWidth + buttonWidth
           },
           this.props.searchBarStyle
-        ]}>
+        ]}
+      >
         <Animated.View style={{
           width: this.state.animatedValue.interpolate({
             inputRange: [0, buttonWidth],
@@ -158,13 +159,14 @@ export default class SearchBar extends Component {
           }),
           height: 28,
           borderRadius: 5
-        }}>
+        }}
+        >
           <TextInput
             onFocus={this.onFocus}
             onBlur={this.onBlur}
             onSubmitEditing={this.onSubmitEditing}
             ref='input'
-            style={[styles.searchTextInputStyle, this.props.showSearchIcon ? '' : {paddingLeft: 8}, {
+            style={[styles.searchTextInputStyle, this.props.showSearchIcon ? '' : { paddingLeft: 8 }, {
               color: this.props.searchInputTextColorActive && !this.state.isSearching
                 ? this.props.searchInputTextColorActive
                 : this.props.searchInputTextColor || '#979797'
@@ -173,14 +175,18 @@ export default class SearchBar extends Component {
             value={this.state.value}
             underlineColorAndroid='transparent'
             placeholder={this.props.placeholder}
-            returnKeyType='search' />
+            returnKeyType='search'
+          />
 
           <Animated.View
             pointerEvents='none'
-            style={[styles.leftSearchIconStyle]}>
-            {this.props.showSearchIcon ? (<Image
-              style={styles.searchIconStyle}
-              source={require('../images/icon-search.png')} />) : null }
+            style={[styles.leftSearchIconStyle]}
+          >
+            {this.props.showSearchIcon ? (
+              <Image
+                style={styles.searchIconStyle}
+                source={require('../images/icon-search.png')}
+              />) : null}
           </Animated.View>
         </Animated.View>
         <View style={[styles.cancelContainer, this.props.cancelContainerStyle]}>
@@ -189,7 +195,7 @@ export default class SearchBar extends Component {
           </TouchableWithoutFeedback>
         </View>
       </View>
-    );
+    )
   }
 
   /**
@@ -198,7 +204,7 @@ export default class SearchBar extends Component {
    * @private
    */
   _renderDefaultCancel () {
-    const { cancelTitle, cancelTextColor } = this.props;
+    const { cancelTitle, cancelTextColor } = this.props
 
     return (
       <View
@@ -214,10 +220,12 @@ export default class SearchBar extends Component {
         renderToHardwareTextureAndroid
       >
         <Text
-          style={{color: cancelTextColor}}
-          numberOfLines={1}>{cancelTitle}</Text>
+          style={{ color: cancelTextColor }}
+          numberOfLines={1}
+        >{cancelTitle}
+        </Text>
       </View>
-    );
+    )
   }
 
   /**
@@ -226,8 +234,8 @@ export default class SearchBar extends Component {
    * @private
    */
   _renderCancel () {
-    const { renderCancel } = this.props;
-    return renderCancel ? renderCancel() : this._renderDefaultCancel();
+    const { renderCancel } = this.props
+    return renderCancel ? renderCancel() : this._renderDefaultCancel()
   }
 
   /**
@@ -236,8 +244,8 @@ export default class SearchBar extends Component {
    * @private
    */
   _renderCancelWhileSearching () {
-    const { renderCancelWhileSearching } = this.props;
-    return renderCancelWhileSearching ? renderCancelWhileSearching() : this._renderDefaultCancel();
+    const { renderCancelWhileSearching } = this.props
+    return renderCancelWhileSearching ? renderCancelWhileSearching() : this._renderDefaultCancel()
   }
 }
 
@@ -279,4 +287,4 @@ const styles = StyleSheet.create({
     width: 12,
     height: 12
   }
-});
+})

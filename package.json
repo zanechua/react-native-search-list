@@ -43,7 +43,8 @@
     "eslint-plugin-semistandard-react": "^4.1.0",
     "eslint-plugin-standard": "^4.0.0",
     "react": "^16.0.0",
-    "react-native": "^0.51.0"
+    "react-native": "^0.51.0",
+    "standard": "^14.3.4"
   },
   "peerDependencies": {
     "react": "^16.0.0",
@@ -55,6 +56,9 @@
   },
   "bugs": {
     "url": "https://github.com/zanechua/react-native-search-list/issues"
+  },
+  "standard": {
+    "parser": "babel-eslint"
   },
   "homepage": "https://github.com/zanechua/react-native-search-list#readme"
 }
