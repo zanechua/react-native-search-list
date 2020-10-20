@@ -1,37 +1,24 @@
-'use strict';
 import React, { Component } from 'react';
-import {
-  View,
-  Image,
-  StyleSheet
-} from 'react-native';
-import Touchable from './../utils/Touchable';
+import { View, Image, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
+import Touchable from '../utils/Touchable';
 
 export default class extends Component {
   static propTypes = {
     icon: Image.propTypes.source,
     onPress: PropTypes.func
-  }
+  };
 
   static defaultProps = {
     icon: require('../images/icon-back.png')
-  }
+  };
 
-  render () {
-    const {
-      icon,
-      leftButtonStyle,
-      backIconStyle,
-      onPress
-    } = this.props;
+  render() {
+    const { icon, leftButtonStyle, backIconStyle, onPress } = this.props;
     return (
-      <Touchable onPress={onPress} underlayColor='rgba(0, 0, 0, 0.0)'>
+      <Touchable onPress={onPress} underlayColor="rgba(0, 0, 0, 0.0)">
         <View style={[styles.actionItem, leftButtonStyle]}>
-          <Image
-            style={[styles.backIcon, backIconStyle]}
-            source={icon}
-            resizeMode='cover' />
+          <Image style={[styles.backIcon, backIconStyle]} source={icon} resizeMode="cover" />
         </View>
       </Touchable>
     );
@@ -52,5 +39,4 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
     paddingRight: 8
   }
-
 });

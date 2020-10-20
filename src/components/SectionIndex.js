@@ -1,22 +1,16 @@
-'use strict';
 import React, { Component } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Animated
-} from 'react-native';
+import { View, Text, StyleSheet, Animated } from 'react-native';
 import PropTypes from 'prop-types';
 
-let returnTrue = () => true;
+const returnTrue = () => true;
 const itemHeight = 20;
 
 export default class SectionIndex extends Component {
   static propTypes = {
     renderSectionItem: PropTypes.func
-  }
+  };
 
-  constructor (props, context) {
+  constructor(props, context) {
     super(props, context);
 
     this.onSectionSelect = this.onSectionSelect.bind(this);
@@ -25,7 +19,7 @@ export default class SectionIndex extends Component {
     this.lastSelectedIndex = null;
   }
 
-  onSectionSelect (sectionId, fromTouch) {
+  onSectionSelect(sectionId, fromTouch) {
     this.props.onSectionSelect && this.props.onSectionSelect(sectionId);
 
     if (!fromTouch) {
@@ -33,12 +27,12 @@ export default class SectionIndex extends Component {
     }
   }
 
-  resetSection () {
+  resetSection() {
     this.lastSelectedIndex = null;
   }
 
-  detectAndScrollToSection (e) {
-    let ev = e.nativeEvent;
+  detectAndScrollToSection(e) {
+    const ev = e.nativeEvent;
     const { sections } = this.props;
 
     if (sections && sections.length) {
@@ -51,27 +45,29 @@ export default class SectionIndex extends Component {
     }
   }
 
-  render () {
+  render() {
     const { renderSectionItem, sections } = this.props;
-    const renderedSections = sections && sections.length > 0 ? sections.map((section, index) => {
-      return (
-        <View
-          key={index}
-          pointerEvents='none'>
-          {renderSectionItem ? renderSectionItem(section) : <View
-            style={styles.item}>
-            <Text style={styles.text}>{section}</Text>
-          </View>}
-        </View>
+    const renderedSections =
+      sections && sections.length > 0 ? (
+        sections.map((section, index) => {
+          return (
+            <View key={index} pointerEvents="none">
+              {renderSectionItem ? (
+                renderSectionItem(section)
+              ) : (
+                <View style={styles.item}>
+                  <Text style={styles.text}>{section}</Text>
+                </View>
+              )}
+            </View>
+          );
+        })
+      ) : (
+        <View />
       );
-    }) : <View />;
 
     return (
-      <Animated.View
-        style={[
-          styles.container,
-          this.props.style
-        ]}>
+      <Animated.View style={[styles.container, this.props.style]}>
         <View
           style={{
             width: 36

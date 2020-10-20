@@ -2,7 +2,7 @@
   "name": "react-native-search-list",
   "version": "2.4.0",
   "description": "react native component for search list view",
-  "main": "./library/index.js",
+  "main": "src/index.js",
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
@@ -27,24 +27,24 @@
   "license": "MIT",
   "dependencies": {
     "js-pinyin": "^0.1.9",
-    "prop-types": "^15.6.0",
-    "standard-version": "^9.0.0"
+    "prop-types": "^15.7.2"
   },
   "devDependencies": {
-    "babel-eslint": "^10.0.2",
-    "babel-jest": "18.0.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react-native": "4.0.1",
-    "eslint": "^6.0.1",
-    "eslint-config-semistandard": "^14.0.0",
-    "eslint-config-semistandard-react": "^4.2.0",
-    "eslint-config-standard": "^13.0.1",
-    "eslint-plugin-import": "^2.18.0",
-    "eslint-plugin-node": "^9.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-react": "^7.14.2",
-    "eslint-plugin-semistandard-react": "^4.1.0",
-    "eslint-plugin-standard": "^4.0.0"
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.3",
+    "@babel/eslint-parser": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
+    "eslint": "^7.11.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-prettier": "^6.13.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.21.4",
+    "eslint-plugin-react-hooks": "^4.1.2",
+    "metro-react-native-babel-preset": "^0.63.0",
+    "prettier": "^2.1.2",
+    "standard-version": "^9.0.0"
   },
   "peerDependencies": {
     "react-native": ">= 0.51.0"

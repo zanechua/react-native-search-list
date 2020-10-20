@@ -1,16 +1,9 @@
-'use strict';
 import React, { Component } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Animated
-} from 'react-native';
+import { Platform, StyleSheet, Text, View, Animated } from 'react-native';
 import PropTypes from 'prop-types';
 import Theme from './Theme';
 
-let statusBarSize = (Platform.OS === 'ios' ? 20 : 0);
+const statusBarSize = Platform.OS === 'ios' ? 20 : 0;
 
 export default class Toolbar extends Component {
   static propTypes = {
@@ -21,14 +14,14 @@ export default class Toolbar extends Component {
 
     title: PropTypes.string,
     textColor: PropTypes.string
-  }
+  };
 
   static defaultProps = {
     textColor: 'white'
-  }
+  };
 
-  render () {
-    const {style} = this.props;
+  render() {
+    const { style } = this.props;
     return (
       <Animated.View
         style={[styles.container, style]}
@@ -41,8 +34,8 @@ export default class Toolbar extends Component {
     );
   }
 
-  _renderBackButton () {
-    const {renderBackButton} = this.props;
+  _renderBackButton() {
+    const { renderBackButton } = this.props;
     if (renderBackButton) {
       return renderBackButton();
     }
@@ -50,27 +43,29 @@ export default class Toolbar extends Component {
     return null;
   }
 
-  _renderTitle () {
-    const {renderTitle, title, textColor} = this.props;
+  _renderTitle() {
+    const { renderTitle, title, textColor } = this.props;
     if (renderTitle) {
       return renderTitle();
-    } else {
-      return (
-        <View style={[styles.titleStyle]}>
-          <Text
-            style={[styles.titleTextStyle, {
-              color: textColor
-            }]}
-            numberOfLines={1}>
-            {title}
-          </Text>
-        </View>
-      );
     }
+    return (
+      <View style={[styles.titleStyle]}>
+        <Text
+          style={[
+            styles.titleTextStyle,
+            {
+              color: textColor
+            }
+          ]}
+          numberOfLines={1}>
+          {title}
+        </Text>
+      </View>
+    );
   }
 
-  _renderRightButton () {
-    const {renderRightButton} = this.props;
+  _renderRightButton() {
+    const { renderRightButton } = this.props;
     if (renderRightButton) {
       return renderRightButton();
     }

@@ -1,4 +1,3 @@
-'use strict';
 import {
   View,
   Text,
@@ -12,16 +11,14 @@ import {
 
 import React, { Component } from 'react';
 
-import {
-  sTrim
-} from './utils/utils';
+import pinyin from 'js-pinyin';
+import PropTypes from 'prop-types';
+import { sTrim } from './utils/utils';
 
 import SearchBar from './components/SearchBar';
-import pinyin from 'js-pinyin';
 import Toolbar from './components/Toolbar';
 import Touchable from './utils/Touchable';
 import SectionIndex from './components/SectionIndex';
-import PropTypes from 'prop-types';
 import Theme from './components/Theme';
 import SearchService from './SearchService';
 import HighlightableText from './components/HighlightableText';
@@ -99,7 +96,7 @@ export default class SearchList extends Component {
 
     onSearchStart: PropTypes.func,
     onSearchEnd: PropTypes.func
-  }
+  };
 
   static defaultProps = {
     toolbarHeight: Theme.size.toolbarHeight,
@@ -112,9 +109,9 @@ export default class SearchList extends Component {
     searchBarContainerStyle: {},
     displayMask: true,
     searchOnDefaultValue: false
-  }
+  };
 
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       isReady: false,
@@ -133,30 +130,31 @@ export default class SearchList extends Component {
     this.onClickCancel = this.onClickCancel.bind(this);
     this.scrollToSection = this.scrollToSection.bind(this);
 
-    pinyin.setOptions({checkPolyphone: false, charCase: 2});
+    pinyin.setOptions({ checkPolyphone: false, charCase: 2 });
   }
 
-  componentDidMount () {
-    this.initList(this.props.data)
-      .then(() => {
-        if (this.props.searchOnDefaultValue && this.props.searchInputDefaultValue != '') {
-          this.search(this.props.searchInputDefaultValue);
-          this.enterSearchState();
-        }
-      });
+  componentDidMount() {
+    this.initList(this.props.data).then(() => {
+      if (this.props.searchOnDefaultValue && this.props.searchInputDefaultValue != '') {
+        this.search(this.props.searchInputDefaultValue);
+        this.enterSearchState();
+      }
+    });
   }
 
-  initList (data = []) {
+  initList(data = []) {
     return new Promise((resolve, reject) => {
       const copiedSource = Array.from(data);
       this.setState({ originalListData: copiedSource });
-      this.parseInitList(SearchService.sortList(SearchService.initList(copiedSource), this.props.sortFunc));
+      this.parseInitList(
+        SearchService.sortList(SearchService.initList(copiedSource), this.props.sortFunc)
+      );
       resolve();
     });
   }
 
-  parseInitList (srcList) {
-    const {formattedData, sectionIds} = SearchService.parseList(srcList);
+  parseInitList(srcList) {
+    const { formattedData, sectionIds } = SearchService.parseList(srcList);
     this.setState({
       isReady: true,
       isSearching: false,
@@ -165,8 +163,8 @@ export default class SearchList extends Component {
     });
   }
 
-  search (input) {
-    this.setState({searchStr: input});
+  search(input) {
+    this.setState({ searchStr: input });
 
     const { originalListData } = this.state;
 
@@ -180,7 +178,10 @@ export default class SearchList extends Component {
           sectionListData: Array.from(this.state.sectionListData)
         });
       } else {
-        const { searchResultData } = SearchService.sortResultList(tempResult, this.props.resultSortFunc);
+        const { searchResultData } = SearchService.sortResultList(
+          tempResult,
+          this.props.resultSortFunc
+        );
         this.setState({
           isSearching: false,
           sectionListData: searchResultData
@@ -198,15 +199,16 @@ export default class SearchList extends Component {
    * @returns {XML}
    * @private
    */
-  _renderSectionHeader ({ section: { title } }) {
+  _renderSectionHeader({ section: { title } }) {
     const { sectionHeaderHeight } = this.props;
 
     return (
       <View style={[styles.sectionHeader, { height: sectionHeaderHeight }]}>
-        <View style={{
-          justifyContent: 'center',
-          height: sectionHeaderHeight
-        }}>
+        <View
+          style={{
+            justifyContent: 'center',
+            height: sectionHeaderHeight
+          }}>
           <Text style={styles.sectionTitle}>{title}</Text>
         </View>
       </View>
@@ -220,9 +222,15 @@ export default class SearchList extends Component {
    * @returns {XML}
    * @private
    */
-  _renderSectionIndexItem (section) {
+  _renderSectionIndexItem(section) {
     return (
-      <Text style={{textAlign: 'center', color: this.props.sectionIndexTextColor, fontSize: 14, height: 20}}>
+      <Text
+        style={{
+          textAlign: 'center',
+          color: this.props.sectionIndexTextColor,
+          fontSize: 14,
+          height: 20
+        }}>
         {section}
       </Text>
     );
@@ -235,7 +243,7 @@ export default class SearchList extends Component {
    * @param adjacentRowHighlighted
    * @returns {XML}
    */
-  _renderItemSeparator ({ section: { title }, highlighted, leadingSection, trailingSection }) {
+  _renderItemSeparator({ section: { title }, highlighted, leadingSection, trailingSection }) {
     let style = styles.rowSeparator;
     if (highlighted) {
       style = [style, styles.rowSeparatorHide];
@@ -244,10 +252,12 @@ export default class SearchList extends Component {
 
     return (
       <View key={randomKey} style={style}>
-        <View style={{
-          height: 1 / PixelRatio.get(),
-          backgroundColor: '#fafafa'
-        }} />
+        <View
+          style={{
+            height: 1 / PixelRatio.get(),
+            backgroundColor: '#fafafa'
+          }}
+        />
       </View>
     );
   }
@@ -257,7 +267,7 @@ export default class SearchList extends Component {
    * @returns {XML}
    * @private
    */
-  _renderFooter () {
+  _renderFooter() {
     return <View style={styles.scrollSpinner} />;
   }
 
@@ -266,7 +276,7 @@ export default class SearchList extends Component {
    * @returns {null}
    * @private
    */
-  _renderHeader () {
+  _renderHeader() {
     return null;
   }
 
@@ -279,59 +289,61 @@ export default class SearchList extends Component {
    * @returns {XML}
    * @private
    */
-  _renderRow ({ index, item, section }) {
-    return <View style={{
-      flex: 1,
-      marginLeft: 20,
-      height: this.props.rowHeight,
-      justifyContent: 'center'
-    }}>
-      <HighlightableText text={item.searchStr} matcher={item.matcher} />
-    </View>;
+  _renderRow({ index, item, section }) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          marginLeft: 20,
+          height: this.props.rowHeight,
+          justifyContent: 'center'
+        }}>
+        <HighlightableText text={item.searchStr} matcher={item.matcher} />
+      </View>
+    );
   }
 
-  enterSearchState () {
-    this.setState({isSearching: true});
+  enterSearchState() {
+    this.setState({ isSearching: true });
     Animated.timing(this.state.animatedValue, {
       duration: this.props.searchBarToggleDuration || Theme.duration.toggleSearchBar,
       toValue: 1,
       useNativeDriver: true
-    }).start(() => {
-    });
+    }).start(() => {});
   }
 
-  exitSearchState () {
+  exitSearchState() {
     Animated.timing(this.state.animatedValue, {
       duration: this.props.searchBarToggleDuration || Theme.duration.toggleSearchBar,
       toValue: 0,
       useNativeDriver: true
     }).start(() => {
       this.search('');
-      this.setState({isSearching: false});
+      this.setState({ isSearching: false });
     });
   }
 
-  onFocus () {
+  onFocus() {
     if (!this.state.isSearching) {
       this.enterSearchState();
     }
     this.props.onSearchStart && this.props.onSearchStart();
   }
 
-  onBlur () {
+  onBlur() {
     this.props.onSearchEnd && this.props.onSearchEnd();
   }
 
-  onClickCancel () {
+  onClickCancel() {
     this.exitSearchState();
     this.props.onSearchEnd && this.props.onSearchEnd();
   }
 
-  cancelSearch () {
+  cancelSearch() {
     this.refs.searchBar && this.refs.searchBar.cancelSearch && this.refs.searchBar.cancelSearch();
   }
 
-  scrollToSection (sectionIndex) {
+  scrollToSection(sectionIndex) {
     const { sectionIds } = this.state;
 
     if (!sectionIds || sectionIds.length === 0) {
@@ -347,60 +359,64 @@ export default class SearchList extends Component {
     this.props.onScrollToSection && this.props.onScrollToSection(sectionIndex);
   }
 
-  render () {
+  render() {
     return (
       <Animated.View
-        ref='view'
-        style={[{
-          // 考虑上动画以后页面要向上移动，这里必须拉长
-          height: Theme.size.windowHeight + this.props.toolbarHeight,
-          width: Theme.size.windowWidth,
-          transform: [
+        ref="view"
+        style={[
+          {
+            // 考虑上动画以后页面要向上移动，这里必须拉长
+            height: Theme.size.windowHeight + this.props.toolbarHeight,
+            width: Theme.size.windowWidth,
+            transform: [
+              {
+                translateY: this.state.animatedValue.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0, -this.props.toolbarHeight]
+                })
+              }
+            ]
+          },
+          this.props.style
+        ]}>
+        <View
+          style={[
             {
-              translateY: this.state.animatedValue.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, -this.props.toolbarHeight]
-              })
+              flex: 1,
+              backgroundColor: this.props.searchListBackgroundColor
             }
-          ]
-        }, this.props.style]}>
-        <View style={[{
-          flex: 1,
-          backgroundColor: this.props.searchListBackgroundColor
-        }]}>
-
+          ]}>
           {this._renderToolbar()}
 
           <View style={this.props.searchBarContainerStyle}>
             <SearchBar
-              placeholder={this.props.searchInputPlaceholder ? this.props.searchInputPlaceholder : ''}
-              defaultValue={this.props.searchInputDefaultValue ? this.props.searchInputDefaultValue : ''}
-
+              placeholder={
+                this.props.searchInputPlaceholder ? this.props.searchInputPlaceholder : ''
+              }
+              defaultValue={
+                this.props.searchInputDefaultValue ? this.props.searchInputDefaultValue : ''
+              }
               onChange={this.search}
               onFocus={this.onFocus}
               onBlur={this.onBlur}
-
               onClickCancel={this.onClickCancel}
               cancelTitle={this.props.cancelTitle}
               cancelTextColor={this.props.cancelTextColor}
-
               searchBarBackgroundColor={this.props.searchBarBackgroundColor}
-
               searchInputBackgroundColor={this.props.searchInputBackgroundColor}
               searchInputBackgroundColorActive={this.props.searchInputBackgroundColorActive}
               searchInputPlaceholderColor={this.props.searchInputPlaceholderColor}
               searchInputTextColor={this.props.searchInputTextColor}
               searchInputTextColorActive={this.props.searchInputTextColorActive}
               searchInputStyle={this.props.searchInputStyle}
-
               renderCancel={this.props.renderCancel}
               renderCancelWhileSearching={this.props.renderCancelWhileSearching}
               cancelContainerStyle={this.props.cancelContainerStyle}
               staticCancelButton={this.props.staticCancelButton}
               showSearchIcon={this.props.showSearchIcon}
               searchBarStyle={this.props.searchBarStyle}
-
-              ref='searchBar' />
+              ref="searchBar"
+            />
           </View>
           {this._renderStickyHeader()}
 
@@ -423,40 +439,41 @@ export default class SearchList extends Component {
    * @returns {*}
    * @private
    */
-  _renderSearchBody () {
+  _renderSearchBody() {
     const { isReady, isSearching, searchStr, sectionListData } = this.state;
     const { renderEmptyResult, renderEmpty, data } = this.props;
 
     if (isSearching && !isReady && renderEmptyResult && searchStr !== '') {
       return renderEmptyResult(searchStr);
-    } else {
-      if (data && data.length > 0 && isReady) {
-        return (
-          <SectionList
-            ref='searchListView'
-            keyExtractor={(item, index) => item.searchStr + index + Math.random().toString(36).substring(2, 15)}
-            sections={sectionListData}
-
-            initialNumToRender={15}
-            onEndReachedThreshold={30}
-            keyboardDismissMode='on-drag'
-            keyboardShouldPersistTaps='always'
-            showsVerticalScrollIndicator
-
-            renderItem={this.props.renderRow || this._renderRow.bind(this)}
-            ItemSeparatorComponent={this.props.renderItemSeparator || this._renderItemSeparator.bind(this)}
-            renderSectionHeader={this.props.renderSectionHeader || this._renderSectionHeader.bind(this)}
-            ListFooterComponent={this.props.renderFooter || this._renderFooter.bind(this)}
-            ListHeaderComponent={this.props.renderHeader || this._renderHeader.bind(this)}
-
-            onScrollToIndexFailed={() => {}}
-          />
-        );
-      } else {
-        if (renderEmpty) {
-          return renderEmpty();
-        }
-      }
+    }
+    if (data && data.length > 0 && isReady) {
+      return (
+        <SectionList
+          ref="searchListView"
+          keyExtractor={(item, index) =>
+            item.searchStr + index + Math.random().toString(36).substring(2, 15)
+          }
+          sections={sectionListData}
+          initialNumToRender={15}
+          onEndReachedThreshold={30}
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="always"
+          showsVerticalScrollIndicator
+          renderItem={this.props.renderRow || this._renderRow.bind(this)}
+          ItemSeparatorComponent={
+            this.props.renderItemSeparator || this._renderItemSeparator.bind(this)
+          }
+          renderSectionHeader={
+            this.props.renderSectionHeader || this._renderSectionHeader.bind(this)
+          }
+          ListFooterComponent={this.props.renderFooter || this._renderFooter.bind(this)}
+          ListHeaderComponent={this.props.renderHeader || this._renderHeader.bind(this)}
+          onScrollToIndexFailed={() => {}}
+        />
+      );
+    }
+    if (renderEmpty) {
+      return renderEmpty();
     }
   }
 
@@ -465,7 +482,7 @@ export default class SearchList extends Component {
    * @returns {*}
    * @private
    */
-  _renderStickyHeader () {
+  _renderStickyHeader() {
     const { renderStickyHeader } = this.props;
     const { isSearching } = this.state;
     return renderStickyHeader ? renderStickyHeader(isSearching) : null;
@@ -476,13 +493,17 @@ export default class SearchList extends Component {
    * @returns {XML}
    * @private
    */
-  _renderMask () {
+  _renderMask() {
     const { isSearching, searchStr } = this.state;
     if (isSearching && !searchStr) {
       return (
         <Touchable
-          onPress={this.cancelSearch} underlayColor='rgba(0, 0, 0, 0.0)'
-          style={[{top: this.props.toolbarHeight + Theme.size.searchInputHeight}, styles.maskStyle]}>
+          onPress={this.cancelSearch}
+          underlayColor="rgba(0, 0, 0, 0.0)"
+          style={[
+            { top: this.props.toolbarHeight + Theme.size.searchInputHeight },
+            styles.maskStyle
+          ]}>
           <Animated.View />
         </Touchable>
       );
@@ -494,19 +515,21 @@ export default class SearchList extends Component {
    * @returns {XML}
    * @private
    */
-  _renderBackButton () {
+  _renderBackButton() {
     return (
-      <Touchable
-        onPress={this.props.onPress}>
+      <Touchable onPress={this.props.onPress}>
         <Image
-          hitSlop={{top: 10, left: 20, bottom: 10, right: 20}}
-          style={[{
-            width: 20,
-            height: 20,
-            paddingLeft: 15,
-            paddingRight: 15
-          }]}
-          source={require('./images/icon-back.png')} />
+          hitSlop={{ top: 10, left: 20, bottom: 10, right: 20 }}
+          style={[
+            {
+              width: 20,
+              height: 20,
+              paddingLeft: 15,
+              paddingRight: 15
+            }
+          ]}
+          source={require('./images/icon-back.png')}
+        />
       </Touchable>
     );
   }
@@ -516,7 +539,7 @@ export default class SearchList extends Component {
    * @returns {XML}
    * @private
    */
-  _renderToolbar () {
+  _renderToolbar() {
     const {
       title,
       titleTextColor,
@@ -525,21 +548,26 @@ export default class SearchList extends Component {
       renderToolbar,
       toolbarHeight,
       toolbarBackgroundColor,
-      statusBarHeight } = this.props;
+      statusBarHeight
+    } = this.props;
     const { animatedValue } = this.state;
 
-    return renderToolbar ? renderToolbar() : (
+    return renderToolbar ? (
+      renderToolbar()
+    ) : (
       <Toolbar
         animatedValue={animatedValue}
-        style={[{
-          opacity: animatedValue.interpolate({
-            inputRange: [0, 1],
-            outputRange: [1, 0]
-          }),
-          backgroundColor: toolbarBackgroundColor,
-          height: toolbarHeight,
-          paddingTop: statusBarHeight
-        }]}
+        style={[
+          {
+            opacity: animatedValue.interpolate({
+              inputRange: [0, 1],
+              outputRange: [1, 0]
+            }),
+            backgroundColor: toolbarBackgroundColor,
+            height: toolbarHeight,
+            paddingTop: statusBarHeight
+          }
+        ]}
         title={title}
         textColor={titleTextColor}
         renderBackButton={renderBackButton || this._renderBackButton.bind(this)}
@@ -553,8 +581,13 @@ export default class SearchList extends Component {
    * @returns {*}
    * @private
    */
-  _renderSectionIndex () {
-    const { hideSectionList, toolbarHeight, sectionIndexContainerStyle, renderSectionIndexItem } = this.props;
+  _renderSectionIndex() {
+    const {
+      hideSectionList,
+      toolbarHeight,
+      sectionIndexContainerStyle,
+      renderSectionIndexItem
+    } = this.props;
     const { isSearching, sectionIds, animatedValue } = this.state;
 
     if (isSearching) {
@@ -563,29 +596,34 @@ export default class SearchList extends Component {
 
     if (hideSectionList) {
       return null;
-    } else {
-      return (
-        <View pointerEvents={'box-none'} style={[{
-          position: 'absolute',
-          right: 0,
-          top: 0,
-          bottom: toolbarHeight,
-          flexDirection: 'column',
-          justifyContent: 'center'
-        }, sectionIndexContainerStyle]}>
-          <SectionIndex
-            style={{
-              opacity: animatedValue.interpolate({
-                inputRange: [0, 1],
-                outputRange: [1, 0]
-              })
-            }}
-            onSectionSelect={this.scrollToSection}
-            sections={sectionIds}
-            renderSectionItem={renderSectionIndexItem || this._renderSectionIndexItem.bind(this)} />
-        </View>
-      );
     }
+    return (
+      <View
+        pointerEvents="box-none"
+        style={[
+          {
+            position: 'absolute',
+            right: 0,
+            top: 0,
+            bottom: toolbarHeight,
+            flexDirection: 'column',
+            justifyContent: 'center'
+          },
+          sectionIndexContainerStyle
+        ]}>
+        <SectionIndex
+          style={{
+            opacity: animatedValue.interpolate({
+              inputRange: [0, 1],
+              outputRange: [1, 0]
+            })
+          }}
+          onSectionSelect={this.scrollToSection}
+          sections={sectionIds}
+          renderSectionItem={renderSectionIndexItem || this._renderSectionIndexItem.bind(this)}
+        />
+      </View>
+    );
   }
 }
 
