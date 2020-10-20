@@ -5,7 +5,8 @@
   "main": "./library/index.js",
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "release": "standard-version"
   },
   "keywords": [
     "react-native",
@@ -25,7 +26,8 @@
   "license": "MIT",
   "dependencies": {
     "js-pinyin": "^0.1.9",
-    "prop-types": "^15.6.0"
+    "prop-types": "^15.6.0",
+    "standard-version": "^9.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.2",
