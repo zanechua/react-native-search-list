@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
-    "release": "standard-version"
+    "release": "standard-version",
+    "lint": "eslint ."
   },
   "keywords": [
     "react-native",
@@ -43,12 +44,9 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.14.2",
     "eslint-plugin-semistandard-react": "^4.1.0",
-    "eslint-plugin-standard": "^4.0.0",
-    "react": "^16.0.0",
-    "react-native": "^0.51.0"
+    "eslint-plugin-standard": "^4.0.0"
   },
   "peerDependencies": {
-    "react": "^16.0.0",
     "react-native": ">= 0.51.0"
   },
   "repository": {
