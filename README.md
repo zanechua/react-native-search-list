@@ -1,10 +1,10 @@
 # React Native Search List
 
 <p align="center">
-<a href="https://www.npmjs.com/package/@zanechua/react-native-search-list"><img src="https://img.shields.io/npm/v/@zanechua/react-native-search-list.svg?style=flat-square" alt="Release"></a>
-<a href="https://www.npmjs.com/package/@zanechua/react-native-search-list"><img src="https://img.shields.io/npm/dm/@zanechua/react-native-search-list.svg?style=flat-square" alt="Release"></a>
+<a href="https://www.npmjs.com/package/react-native-search-list"><img src="https://img.shields.io/npm/v/react-native-search-list.svg?style=flat-square" alt="Release"></a>
+<a href="https://www.npmjs.com/package/react-native-search-list"><img src="https://img.shields.io/npm/dm/react-native-search-list.svg?style=flat-square" alt="Release"></a>
 <a href="https://github.com/zanechua/react-native-search-list/releases"><img src="https://img.shields.io/github/release/zanechua/react-native-search-list.svg?style=flat-square" alt="Release"></a>
-<a href="https://standardjs.com"><img src="https://img.shields.io/badge/code_style-semistandard-brightgreen.svg?style=flat-square" alt="Standard - JavaScript Style Guide"></a>
+<a href="https://standardjs.com"><img src="https://img.shields.io/badge/code_style-semistandard-brightgreen.svg?style=flat-square" alt="Semi Standard - JavaScript Style Guide"></a>
 <a href="https://github.com/zanechua/react-native-search-list/blob/master/LICENSE"><img src="https://img.shields.io/github/license/zanechua/react-native-search-list.svg?style=flat-square" alt="License"></a>
 </p>
 
@@ -25,7 +25,7 @@ The following picture may be helpful to understand the structure and APIs:
 
 ## Installation
 
-`$ npm install @zanechua/react-native-search-list --save`
+`$ npm install react-native-search-list --save`
 
 ## Usage
 
