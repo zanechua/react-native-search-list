@@ -1,5 +1,12 @@
 # Changelog
 
+### [2.4.3](https://github.com/zanechua/react-native-search-list/compare/v2.4.2...v2.4.3) (2021-06-21)
+
+
+### Maintenance
+
+* add npmignore file ([9e14877](https://github.com/zanechua/react-native-search-list/commit/9e14877ee7edea00f99f680448c264bb95b74443))
+
 ### [2.4.2](https://github.com/zanechua/react-native-search-list/compare/v2.4.1...v2.4.2) (2021-06-21)
 
 
