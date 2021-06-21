@@ -187,6 +187,7 @@ export default class SearchBar extends Component {
             value={this.state.value}
             underlineColorAndroid="transparent"
             placeholder={this.props.placeholder}
+            placeholderTextColor={this.props.searchInputPlaceholderColor}
             returnKeyType="search"
           />
 

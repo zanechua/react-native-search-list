@@ -90,7 +90,6 @@ renderRow | func | `renderRow` for the internal ListView |
 renderToolbar | func | `renderToolbar` for the Toolbar |
 renderCancel | func | `renderCancel` for custom rendering of the cancel button |
 renderCancelWhileSearching | func | `renderCancelWhileSearching` for custom rendering of the cancel button during search |
-renderToolbar | func | `renderToolbar` for the Toolbar |
 onSearchStart | func | Callback when searching start. |
 onSearchEnd | func | Callback when searching end. |
 
