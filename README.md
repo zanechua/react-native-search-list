@@ -11,16 +11,18 @@
 
 A searchable ListView which supports Chinese PinYin and alphabetical index.
 
+A fork of https://github.com/unpourtous/react-native-search-list
+
 The original library was missing some commonly used features that are now implemented and the deprecated ListView was replaced with a SectionList to be compatible with future releases of React Native.
 
 <p align="center">
-  <img src='https://raw.githubusercontent.com/zanechua/react-native-search-list/master/screenshots/search-list-demo-v2.gif' />
+  <img src='https://user-images.githubusercontent.com/4265429/122762221-abf5ad80-d2cf-11eb-85f2-c25188081c02.gif' />
 </p>
 
 The following picture may be helpful to understand the structure and APIs: 
 
 <p align="center">
-<img src='https://raw.githubusercontent.com/zanechua/react-native-search-list/master/screenshots/structure.jpg' />
+<img src='https://user-images.githubusercontent.com/4265429/122762306-c29c0480-d2cf-11eb-996a-de0cb8ab03a5.jpg' />
 </p>
 
 ## Installation
