@@ -33,6 +33,7 @@ export default class SearchBar extends Component {
     cancelTitle: PropTypes.string, // title for the search cancel button
     cancelTextColor: PropTypes.string, // color for the search cancel button
 
+    searchIconColor: PropTypes.string, // default state background color for the search input
     searchInputBackgroundColor: PropTypes.string, // default state background color for the search input
     searchInputBackgroundColorActive: PropTypes.string, // active state background color for the search input
     searchInputPlaceholderColor: PropTypes.string, // default placeholder color for the search input
@@ -48,18 +49,7 @@ export default class SearchBar extends Component {
   };
 
   static defaultProps = {
-    searchInputBackgroundColor: '#ffffff',
-    searchInputBackgroundColorActive: '#171a23',
-
-    searchInputPlaceholderColor: '#979797',
-    searchInputTextColor: '#171a23',
-    searchInputTextColorActive: '#ffffff',
-
-    searchBarBackgroundColor: '#171a23',
-
-    cancelTextColor: '#ffffff',
     cancelTitle: 'Cancel',
-
     showSearchIcon: true,
     staticCancelButton: false
   };
@@ -114,7 +104,8 @@ export default class SearchBar extends Component {
 
     Animated.timing(this.state.animatedValue, {
       duration: Theme.duration.toggleSearchBar,
-      toValue: toVal
+      toValue: toVal,
+      useNativeDriver: false
     }).start(() => {
       this.setState({ isSearching });
     });
@@ -149,6 +140,7 @@ export default class SearchBar extends Component {
             width: this.state.animatedValue.interpolate({
               inputRange: [0, buttonWidth],
               // TODO 这里要想办法做得更灵活一点
+              // TODO Rework this to use transform as native driver doesn't support width
               // Control total width of searchBar
               outputRange: [
                 this.props.staticCancelButton
@@ -176,8 +168,7 @@ export default class SearchBar extends Component {
               styles.searchTextInputStyle,
               this.props.showSearchIcon ? '' : { paddingLeft: 8 },
               {
-                color:
-                  this.props.searchInputTextColorActive && !this.state.isSearching
+                color: this.props.searchInputTextColorActive && !this.state.isSearching
                     ? this.props.searchInputTextColorActive
                     : this.props.searchInputTextColor || '#979797'
               },
@@ -193,7 +184,7 @@ export default class SearchBar extends Component {
 
           <Animated.View pointerEvents="none" style={[styles.leftSearchIconStyle]}>
             {this.props.showSearchIcon ? (
-              <Image style={styles.searchIconStyle} source={require('../images/icon-search.png')} />
+              <Text style={[styles.searchIconStyle, { color: this.props.searchIconColor }]}>{' '}&#x26B2;</Text>
             ) : null}
           </Animated.View>
         </Animated.View>
@@ -286,12 +277,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     opacity: 1,
-    top: 0,
+    top: 1,
     bottom: 0,
     width: searchIconWidth
   },
   searchIconStyle: {
-    width: 12,
-    height: 12
+    transform: [{ rotate: '-45deg' }],
+    fontSize: 24
   }
 });

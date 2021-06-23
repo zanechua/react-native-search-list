@@ -6,32 +6,43 @@ import {
   Animated,
   Image,
   Platform,
-  SectionList
+  SectionList,
+  TouchableOpacity, Alert
 } from 'react-native';
 
 import React, { Component } from 'react';
 
 import pinyin from 'js-pinyin';
 import PropTypes from 'prop-types';
-import { sTrim } from './utils/utils';
+import { sTrim } from './utils';
 
-import SearchBar from './components/SearchBar';
-import Toolbar from './components/Toolbar';
-import Touchable from './utils/Touchable';
-import SectionIndex from './components/SectionIndex';
-import Theme from './components/Theme';
 import SearchService from './SearchService';
-import HighlightableText from './components/HighlightableText';
+
+import { 
+  SearchBar,
+  Toolbar,
+  SectionIndex,
+  Theme,
+  HighlightableText,
+  Empty,
+  EmptyResult,
+  SectionHeader,
+  SectionIndexItem,
+} from './components';
 
 export default class SearchList extends Component {
   static propTypes = {
     data: PropTypes.array.isRequired,
+    searchCursor: PropTypes.string,
+    itemOnPress: PropTypes.func,
     // use `renderRow` to get much more freedom
     rowHeight: PropTypes.number.isRequired,
 
     hideSectionList: PropTypes.bool,
 
     sectionHeaderHeight: PropTypes.number,
+
+    colors: PropTypes.object,
 
     searchListBackgroundColor: PropTypes.string,
 
@@ -40,6 +51,7 @@ export default class SearchList extends Component {
     searchBarToggleDuration: PropTypes.number,
     searchBarBackgroundColor: PropTypes.string,
 
+    searchIconColor: PropTypes.string,
     searchInputBackgroundColor: PropTypes.string,
     searchInputBackgroundColorActive: PropTypes.string,
     // default state text color for the search input
@@ -60,7 +72,6 @@ export default class SearchList extends Component {
     cancelTextColor: PropTypes.string,
 
     // use `renderSectionIndexItem` to get much more freedom
-    sectionIndexTextColor: PropTypes.string,
     renderSectionIndexItem: PropTypes.func,
     sectionIndexContainerStyle: PropTypes.object,
 
@@ -69,7 +80,6 @@ export default class SearchList extends Component {
 
     onScrollToSection: PropTypes.func,
 
-    statusBarHeight: PropTypes.number,
     toolbarHeight: PropTypes.number,
     renderToolbar: PropTypes.func,
     renderCancel: PropTypes.func,
@@ -92,20 +102,32 @@ export default class SearchList extends Component {
     renderHeader: PropTypes.func,
     renderFooter: PropTypes.func,
     renderStickyHeader: PropTypes.func,
-    renderRow: PropTypes.func.isRequired,
+    renderRow: PropTypes.func,
 
     onSearchStart: PropTypes.func,
     onSearchEnd: PropTypes.func
   };
 
   static defaultProps = {
+    searchCursor: 'cursor',
     toolbarHeight: Theme.size.toolbarHeight,
-    statusBarHeight: Theme.size.statusBarHeight,
     sectionHeaderHeight: Theme.size.sectionHeaderHeight,
     rowHeight: Theme.size.rowHeight,
-    sectionIndexTextColor: '#171a23',
-    searchListBackgroundColor: Theme.color.primaryDark,
-    toolbarBackgroundColor: Theme.color.primaryDark,
+    searchInputPlaceholder: 'Search',
+    searchInputDefaultValue: '',
+    colors: {
+      cancelTextColor: Theme.color.white,
+      searchIconColor: Theme.color.primaryDark,
+      searchListBackgroundColor: Theme.color.primaryDark,
+      searchInputBackgroundColor: Theme.color.white,
+      searchInputBackgroundColorActive: Theme.color.white,
+      searchInputPlaceholderColor: '#979797',
+      searchInputTextColor: Theme.color.primaryDark,
+      searchInputTextColorActive: Theme.color.primaryDark,
+      sectionIndexTextColor: '#6ec6ff',
+      searchBarBackgroundColor: Theme.color.primaryDark,
+      toolbarBackgroundColor: Theme.color.primaryDark
+    },
     searchBarContainerStyle: {},
     displayMask: true,
     searchOnDefaultValue: false
@@ -129,12 +151,13 @@ export default class SearchList extends Component {
     this.onBlur = this.onBlur.bind(this);
     this.onClickCancel = this.onClickCancel.bind(this);
     this.scrollToSection = this.scrollToSection.bind(this);
+    this.itemOnPress = this.itemOnPress.bind(this);
 
     pinyin.setOptions({ checkPolyphone: false, charCase: 2 });
   }
 
   componentDidMount() {
-    this.initList(this.props.data).then(() => {
+    this.initList(this.props.data, this.props.searchCursor).then(() => {
       if (this.props.searchOnDefaultValue && this.props.searchInputDefaultValue != '') {
         this.search(this.props.searchInputDefaultValue);
         this.enterSearchState();
@@ -142,12 +165,12 @@ export default class SearchList extends Component {
     });
   }
 
-  initList(data = []) {
+  initList(data = [], searchCursor) {
     return new Promise((resolve, reject) => {
       const copiedSource = Array.from(data);
       this.setState({ originalListData: copiedSource });
       this.parseInitList(
-        SearchService.sortList(SearchService.initList(copiedSource), this.props.sortFunc)
+        SearchService.sortList(SearchService.initList(copiedSource, searchCursor), this.props.sortFunc)
       );
       resolve();
     });
@@ -165,12 +188,12 @@ export default class SearchList extends Component {
 
   search(input) {
     this.setState({ searchStr: input });
-
     const { originalListData } = this.state;
+    const { searchCursor } = this.props;
 
     if (input) {
       input = sTrim(input);
-      const tempResult = SearchService.search(originalListData, input.toLowerCase());
+      const tempResult = SearchService.search(originalListData, input.toLowerCase(), searchCursor);
 
       if (tempResult.length === 0) {
         this.setState({
@@ -201,18 +224,7 @@ export default class SearchList extends Component {
    */
   _renderSectionHeader({ section: { title } }) {
     const { sectionHeaderHeight } = this.props;
-
-    return (
-      <View style={[styles.sectionHeader, { height: sectionHeaderHeight }]}>
-        <View
-          style={{
-            justifyContent: 'center',
-            height: sectionHeaderHeight
-          }}>
-          <Text style={styles.sectionTitle}>{title}</Text>
-        </View>
-      </View>
-    );
+    return <SectionHeader title={title} sectionHeaderHeight={sectionHeaderHeight} />
   }
 
   /**
@@ -223,17 +235,8 @@ export default class SearchList extends Component {
    * @private
    */
   _renderSectionIndexItem(section) {
-    return (
-      <Text
-        style={{
-          textAlign: 'center',
-          color: this.props.sectionIndexTextColor,
-          fontSize: 14,
-          height: 20
-        }}>
-        {section}
-      </Text>
-    );
+    const { colors: { sectionIndexTextColor } } = this.props;
+    return <SectionIndexItem section={section} sectionIndexTextColor={sectionIndexTextColor} />
   }
 
   /**
@@ -290,16 +293,20 @@ export default class SearchList extends Component {
    * @private
    */
   _renderRow({ index, item, section }) {
+    const { searchCursor, itemOnPress } = this.props;
     return (
-      <View
-        style={{
-          flex: 1,
-          marginLeft: 20,
-          height: this.props.rowHeight,
-          justifyContent: 'center'
-        }}>
-        <HighlightableText text={item.searchStr} matcher={item.matcher} />
+    <TouchableOpacity
+      onPress={() => typeof itemOnPress === 'undefined' ? this.itemOnPress(item) : itemOnPress(item)} >
+      <View style={{ flex: 1, marginLeft: 20, height: 40, justifyContent: 'center' }}>
+        {/* use `HighlightableText` to highlight the search result */}
+        <HighlightableText
+          matcher={item.matcher}
+          text={item[searchCursor]}
+          textColor="#000000"
+          hightlightTextColor="#0069c0"
+        />
       </View>
+    </TouchableOpacity>
     );
   }
 
@@ -321,6 +328,16 @@ export default class SearchList extends Component {
       this.search('');
       this.setState({ isSearching: false });
     });
+  }
+
+  itemOnPress(item) {
+    const { searchCursor } = this.props;
+    Alert.alert(
+      'Clicked!',
+      `sectionID:${item.orderIndex}; item: ${item[searchCursor]}`,
+      [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+      { cancelable: true }
+    );
   }
 
   onFocus() {
@@ -383,31 +400,28 @@ export default class SearchList extends Component {
           style={[
             {
               flex: 1,
-              backgroundColor: this.props.searchListBackgroundColor
+              backgroundColor: this.props.colors.searchListBackgroundColor
             }
           ]}>
           {this._renderToolbar()}
 
           <View style={this.props.searchBarContainerStyle}>
             <SearchBar
-              placeholder={
-                this.props.searchInputPlaceholder ? this.props.searchInputPlaceholder : ''
-              }
-              defaultValue={
-                this.props.searchInputDefaultValue ? this.props.searchInputDefaultValue : ''
-              }
+              placeholder={this.props.searchInputPlaceholder}
+              defaultValue={this.props.searchInputDefaultValue}
               onChange={this.search}
               onFocus={this.onFocus}
               onBlur={this.onBlur}
               onClickCancel={this.onClickCancel}
               cancelTitle={this.props.cancelTitle}
-              cancelTextColor={this.props.cancelTextColor}
-              searchBarBackgroundColor={this.props.searchBarBackgroundColor}
-              searchInputBackgroundColor={this.props.searchInputBackgroundColor}
-              searchInputBackgroundColorActive={this.props.searchInputBackgroundColorActive}
-              searchInputPlaceholderColor={this.props.searchInputPlaceholderColor}
-              searchInputTextColor={this.props.searchInputTextColor}
-              searchInputTextColorActive={this.props.searchInputTextColorActive}
+              cancelTextColor={this.props.colors.cancelTextColor}
+              searchBarBackgroundColor={this.props.colors.searchBarBackgroundColor}
+              searchIconColor={this.props.colors.searchIconColor}
+              searchInputBackgroundColor={this.props.colors.searchInputBackgroundColor}
+              searchInputBackgroundColorActive={this.props.colors.searchInputBackgroundColorActive}
+              searchInputPlaceholderColor={this.props.colors.searchInputPlaceholderColor}
+              searchInputTextColor={this.props.colors.searchInputTextColor}
+              searchInputTextColorActive={this.props.colors.searchInputTextColorActive}
               searchInputStyle={this.props.searchInputStyle}
               renderCancel={this.props.renderCancel}
               renderCancelWhileSearching={this.props.renderCancelWhileSearching}
@@ -441,17 +455,17 @@ export default class SearchList extends Component {
    */
   _renderSearchBody() {
     const { isReady, isSearching, searchStr, sectionListData } = this.state;
-    const { renderEmptyResult, renderEmpty, data } = this.props;
+    const { searchCursor, renderEmptyResult, renderEmpty, data } = this.props;
 
-    if (isSearching && !isReady && renderEmptyResult && searchStr !== '') {
-      return renderEmptyResult(searchStr);
+    if (isSearching && !isReady && searchStr !== '') {
+      return typeof renderEmptyResult === 'undefined' ? <EmptyResult searchStr={searchStr} /> : renderEmptyResult(searchStr)
     }
     if (data && data.length > 0 && isReady) {
       return (
         <SectionList
           ref="searchListView"
           keyExtractor={(item, index) =>
-            item.searchStr + index + Math.random().toString(36).substring(2, 15)
+            item[searchCursor] + index + Math.random().toString(36).substring(2, 15)
           }
           sections={sectionListData}
           initialNumToRender={15}
@@ -472,9 +486,7 @@ export default class SearchList extends Component {
         />
       );
     }
-    if (renderEmpty) {
-      return renderEmpty();
-    }
+    {typeof renderEmpty === 'undefined' ? <Empty/> : renderEmpty()}
   }
 
   /**
@@ -497,7 +509,7 @@ export default class SearchList extends Component {
     const { isSearching, searchStr } = this.state;
     if (isSearching && !searchStr) {
       return (
-        <Touchable
+        <TouchableOpacity
           onPress={this.cancelSearch}
           underlayColor="rgba(0, 0, 0, 0.0)"
           style={[
@@ -505,7 +517,7 @@ export default class SearchList extends Component {
             styles.maskStyle
           ]}>
           <Animated.View />
-        </Touchable>
+        </TouchableOpacity>
       );
     }
   }
@@ -517,20 +529,20 @@ export default class SearchList extends Component {
    */
   _renderBackButton() {
     return (
-      <Touchable onPress={this.props.onPress}>
-        <Image
+      <TouchableOpacity onPress={this.props.onPress} style={{ position: 'absolute' }}>
+        <Text
           hitSlop={{ top: 10, left: 20, bottom: 10, right: 20 }}
           style={[
             {
-              width: 20,
-              height: 20,
+              fontSize: 30,
+              color: Theme.color.white,
               paddingLeft: 15,
               paddingRight: 15
             }
-          ]}
-          source={require('./images/icon-back.png')}
-        />
-      </Touchable>
+          ]}>
+          &#10094;
+        </Text>
+      </TouchableOpacity>
     );
   }
 
@@ -547,9 +559,9 @@ export default class SearchList extends Component {
       renderRightButton,
       renderToolbar,
       toolbarHeight,
-      toolbarBackgroundColor,
-      statusBarHeight
+      colors
     } = this.props;
+    const { toolbarBackgroundColor } = colors;
     const { animatedValue } = this.state;
 
     return renderToolbar ? (
@@ -564,8 +576,7 @@ export default class SearchList extends Component {
               outputRange: [1, 0]
             }),
             backgroundColor: toolbarBackgroundColor,
-            height: toolbarHeight,
-            paddingTop: statusBarHeight
+            height: toolbarHeight
           }
         ]}
         title={title}
@@ -632,11 +643,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#ffffff'
+    backgroundColor: Theme.color.white
   },
   rowSeparator: {
-    backgroundColor: '#ffffff',
-    paddingLeft: 25
+    backgroundColor: Theme.color.white,
+    paddingLeft: 30
   },
   rowSeparatorHide: {
     opacity: 0.0

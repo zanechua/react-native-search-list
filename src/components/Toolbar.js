@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, Animated } from 'react-native';
+import { Platform, StyleSheet, Text, View, Animated, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 import Theme from './Theme';
 
@@ -77,7 +77,6 @@ export default class Toolbar extends Component {
 let styles = StyleSheet.create({
   container: {
     height: Theme.size.headerHeight,
-    paddingTop: Theme.size.statusBarHeight,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#171a23'

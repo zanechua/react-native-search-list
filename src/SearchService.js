@@ -1,16 +1,16 @@
 import pinyin from 'js-pinyin';
-import { isCharacter, sTrim, containsChinese } from './utils/utils';
+import { isCharacter, sTrim, containsChinese } from './utils';
 
 export default class SearchService {
-  static search(source, searchStr) {
+  static search(source, searchStr, searchCursor) {
     const tempResult = [];
     source.forEach((item, idx, array) => {
       if (item) {
         // 全局匹配字符
-        if (item.searchStr) {
+        if (item[searchCursor]) {
           const { searchHandler } = item;
           const result = SearchService.generateMacherInto(
-            item.searchStr,
+            item[searchCursor],
             item,
             searchStr,
             searchHandler ? searchHandler.translatedStr : '',
@@ -162,19 +162,19 @@ export default class SearchService {
     };
   }
 
-  static initList(sourceData) {
+  static initList(sourceData, searchCursor) {
     sourceData.forEach((item) => {
       if (item) {
         // 生成排序索引
         item.orderIndex = '';
         item.isChinese = 0;
 
-        if (item.searchStr) {
-          const tempStr = sTrim(item.searchStr);
+        if (item[searchCursor]) {
+          const tempStr = sTrim(item[searchCursor]);
 
           if (tempStr !== '') {
             // 补充首字母
-            const firstChar = item.searchStr[0];
+            const firstChar = item[searchCursor][0];
 
             if (containsChinese(firstChar)) {
               const pinyinChar = pinyin.getCamelChars(firstChar);
@@ -189,7 +189,7 @@ export default class SearchService {
             }
           }
           // 对中文进行处理
-          const handler = SearchService.generateSearchHandler(item.searchStr);
+          const handler = SearchService.generateSearchHandler(item[searchCursor]);
           if (handler) {
             item.searchHandler = handler;
           }
@@ -203,22 +203,10 @@ export default class SearchService {
     sourceData.sort(
       sortFunc ||
         function (a, b) {
-          if (!isCharacter(b.orderIndex)) {
+          if (!isCharacter(b.orderIndex) || b.orderIndex > a.orderIndex || b.isChinese > a.isChinese) {
             return -1;
           }
-          if (!isCharacter(a.orderIndex)) {
-            return 1;
-          }
-          if (b.orderIndex > a.orderIndex) {
-            return -1;
-          }
-          if (b.orderIndex < a.orderIndex) {
-            return 1;
-          }
-          if (b.isChinese > a.isChinese) {
-            return -1;
-          }
-          if (b.isChinese < a.isChinese) {
+          if (!isCharacter(a.orderIndex) || b.orderIndex < a.orderIndex || b.isChinese < a.isChinese) {
             return 1;
           }
           return 0;

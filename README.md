@@ -33,14 +33,15 @@ yarn add react-native-search-list
 
 ## Usage
 
-To Use SearchList, you will need an array of objects as the data source, and each object has to have a searchStr property, example code is in `./example.js`.
+To Use SearchList, you will need an array of objects as the data source, and each object has to have a `cursor` property, example code is in `./example.js`.
 
 
 ## APIs
 
 prop name | type | description | default value
 --- | --- | --- | --- 
-data | array | The rows of list view.each object should contain `searchStr`, it will be used for search source. 
+data | array | The data object
+searchCursor | string | Set the key in the data array that's being used as the search source | `cursor`
 renderRow | number | Render your custom row content | 
 rowHeight | number | The height of the default row content, it will be used for scroll calculate | `40`
 sectionHeaderHeight | number | The height of section header content | `24`
@@ -52,6 +53,7 @@ searchBarBackgroundColor | string | Custom search bar background color | `#171a2
 searchBarContainerStyle | object | Style properties for the SearchBar Container Component | 
 searchBarStyle | object | Style properties for the SearchBar Component | 
 searchOnDefaultValue | bool | Enable filtered results based on default value | 
+searchIconColor | string | Custom color for the search icon | `#171a23`
 searchInputBackgroundColor | string | Custom search input default state background color | `#ffffff`
 searchInputBackgroundColorActive | string | Custom search input searching state background color | 
 searchInputPlaceholder | string | Custom search input placeholder text | 
@@ -60,7 +62,6 @@ searchInputPlaceholderColor | string | Custom search input placeholder text colo
 searchInputTextColor | string | Custom search input default state text color | `#171a23`
 searchInputTextColorActive | string | Custom search input searching state text color | `#ffffff`
 searchInputStyle | object | Style properties for the internal TextInput Component | 
-statusBarHeight | number | The height of the status bar | 
 toolbarHeight | number | The height of the tool bar | `44`
 searchBarBackgroundColor | string | Custom search bar background color | 
 staticCancelButton | bool | Enable/Disable a static cancel button with no slide in animation | `false`

@@ -1,14 +1,5 @@
-import { Dimensions, Platform, StatusBar } from 'react-native';
+import { Dimensions } from 'react-native';
 
-const statusBarHeight = Platform.select({
-  android: StatusBar.currentHeight,
-  // TODO 这里不要写死值
-  ios:
-    Platform.OS === 'ios' &&
-    parseInt((Dimensions.get('window').height / Dimensions.get('window').width) * 100) === 216
-      ? 44
-      : 20
-});
 export default {
   color: {
     primary: '#171a23',
@@ -16,6 +7,10 @@ export default {
 
     primaryDark: '#171a23',
     primaryLight: '#171a23',
+
+    white: '#ffffff',
+    black: '#000000',
+    secondaryBlack: '#171a23',
 
     // secondary: '',
     maskColor: 'rgba(0, 0, 0, 0.1)'
@@ -25,13 +20,11 @@ export default {
     rowHeight: 40,
 
     toolbarHeight: 44,
-    headerHeight: 44 + statusBarHeight,
+    headerHeight: 44,
     searchInputHeight: 44,
 
     windowWidth: Dimensions.get('window').width,
     windowHeight: Dimensions.get('window').height,
-
-    statusBarHeight,
 
     searchIconWidth: 30,
     cancelButtonWidth: 70, // width for the cancel button area, should be a fix value at this moment
