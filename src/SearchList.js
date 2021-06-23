@@ -527,7 +527,7 @@ export default class SearchList extends Component {
           onPress={this.cancelSearch}
           underlayColor="rgba(0, 0, 0, 0.0)"
           style={[
-            { top: this.props.toolbarHeight + Theme.size.searchInputHeight },
+            { top: this.props.toolbarHeight + Theme.size.searchInputContainerHeight },
             styles.maskStyle
           ]}>
           <Animated.View />
@@ -690,7 +690,7 @@ const styles = StyleSheet.create({
   scrollSpinner: {
     ...Platform.select({
       android: {
-        height: Theme.size.searchInputHeight
+        height: Theme.size.searchInputContainerHeight
       },
       ios: {
         marginVertical: 40

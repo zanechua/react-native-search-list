@@ -21,7 +21,8 @@ export default {
 
     toolbarHeight: 44,
     headerHeight: 44,
-    searchInputHeight: 44,
+    searchInputHeight: 40,
+    searchInputContainerHeight: 56,
 
     windowWidth: Dimensions.get('window').width,
     windowHeight: Dimensions.get('window').height,

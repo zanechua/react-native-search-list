@@ -127,7 +127,7 @@ export default class SearchBar extends Component {
           {
             flexDirection: 'row',
             padding: searchBarHorizontalPadding,
-            height: Theme.size.searchInputHeight,
+            height: Theme.size.searchInputContainerHeight,
             backgroundColor: this.props.searchBarBackgroundColor
           },
           {
@@ -156,7 +156,7 @@ export default class SearchBar extends Component {
                 this.props.searchInputBackgroundColorActive
               ]
             }),
-            height: 28,
+            height: Theme.size.searchInputHeight,
             borderRadius: 5
           }}>
           <TextInput
@@ -215,7 +215,7 @@ export default class SearchBar extends Component {
       <View
         style={{
           flex: 1,
-          height: Theme.size.searchInputHeight,
+          height: Theme.size.searchInputContainerHeight,
           width: buttonWidth,
           justifyContent: 'center',
           alignItems: 'center',
@@ -223,7 +223,7 @@ export default class SearchBar extends Component {
         }}
         shouldRasterizeIOS
         renderToHardwareTextureAndroid>
-        <Text style={{ color: cancelTextColor }} numberOfLines={1}>
+        <Text style={{ color: cancelTextColor, fontSize: 16 }} numberOfLines={1}>
           {cancelTitle}
         </Text>
       </View>
@@ -258,11 +258,12 @@ const styles = StyleSheet.create({
   },
   searchTextInputStyle: {
     flex: 1,
-    height: 28,
+    height: Theme.size.searchInputHeight,
     padding: 0,
     paddingLeft: searchIconWidth,
     paddingRight: 8,
-    borderRadius: 5
+    borderRadius: 5,
+    fontSize: 16
   },
   centerSearchIconStyle: {
     position: 'absolute',
@@ -281,12 +282,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     opacity: 1,
-    top: 1,
+    top: 4,
     bottom: 0,
     width: searchIconWidth
   },
   searchIconStyle: {
     transform: [{ rotate: '-45deg' }],
-    fontSize: 24
+    fontSize: 26
   }
 });
