@@ -1,5 +1,7 @@
 # Changelog
 
+### [3.0.1](https://github.com/zanechua/react-native-search-list/compare/v3.0.0...v3.0.1) (2021-06-23)
+
 ## [3.0.0](https://github.com/zanechua/react-native-search-list/compare/v2.4.3...v3.0.0) (2021-06-23)
 
 
