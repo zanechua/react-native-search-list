@@ -662,17 +662,6 @@ const styles = StyleSheet.create({
   rowSeparatorHide: {
     opacity: 0.0
   },
-  sectionHeader: {
-    flex: 1,
-    height: Theme.size.sectionHeaderHeight,
-    justifyContent: 'center',
-    paddingLeft: 25,
-    backgroundColor: '#fafafa'
-  },
-  sectionTitle: {
-    color: '#979797',
-    fontSize: 14
-  },
   separator2: {
     backgroundColor: 'rgba(0, 0, 0, 0.1)',
     height: 1 / PixelRatio.get(),

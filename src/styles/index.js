@@ -18,7 +18,7 @@ export default StyleSheet.create({
     flex: 1,
     height: Theme.size.sectionHeaderHeight,
     justifyContent: 'center',
-    paddingLeft: 25,
+    paddingLeft: 12,
     backgroundColor: '#fafafa'
   },
   sectionTitle: {
