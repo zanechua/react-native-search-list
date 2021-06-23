@@ -83,7 +83,7 @@ export default class SearchService {
   static sortResultList(searchResultList, resultSortFunc) {
     searchResultList.sort(
       resultSortFunc ||
-        function (a, b) {
+        ((a, b) => {
           if (b.matcher && a.matcher) {
             if (b.matcher.charMatchStartIndex < a.matcher.charMatchStartIndex) {
               return 1;
@@ -94,7 +94,7 @@ export default class SearchService {
             return 0;
           }
           return 0;
-        }
+        })
     );
 
     const { formattedData } = this.parseList(searchResultList);
@@ -148,9 +148,7 @@ export default class SearchService {
           formattedData.push({ title: orderIndex, data: [] });
         }
 
-        const rowData = formattedData.find((object) => {
-          return object.title === orderIndex;
-        });
+        const rowData = formattedData.find((object) => object.title === orderIndex);
 
         rowData.data.push(item);
       }
@@ -202,15 +200,23 @@ export default class SearchService {
   static sortList(sourceData, sortFunc) {
     sourceData.sort(
       sortFunc ||
-        function (a, b) {
-          if (!isCharacter(b.orderIndex) || b.orderIndex > a.orderIndex || b.isChinese > a.isChinese) {
+        ((a, b) => {
+          if (
+            !isCharacter(b.orderIndex) ||
+            b.orderIndex > a.orderIndex ||
+            b.isChinese > a.isChinese
+          ) {
             return -1;
           }
-          if (!isCharacter(a.orderIndex) || b.orderIndex < a.orderIndex || b.isChinese < a.isChinese) {
+          if (
+            !isCharacter(a.orderIndex) ||
+            b.orderIndex < a.orderIndex ||
+            b.isChinese < a.isChinese
+          ) {
             return 1;
           }
           return 0;
-        }
+        })
     );
 
     return sourceData;

@@ -49,19 +49,17 @@ export default class SectionIndex extends Component {
     const { renderSectionItem, sections } = this.props;
     const renderedSections =
       sections && sections.length > 0 ? (
-        sections.map((section, index) => {
-          return (
-            <View key={index} pointerEvents="none">
-              {renderSectionItem ? (
-                renderSectionItem(section)
-              ) : (
-                <View style={styles.item}>
-                  <Text style={styles.text}>{section}</Text>
-                </View>
-              )}
-            </View>
-          );
-        })
+        sections.map((section, index) => (
+          <View key={index} pointerEvents="none">
+            {renderSectionItem ? (
+              renderSectionItem(section)
+            ) : (
+              <View style={styles.item}>
+                <Text style={styles.text}>{section}</Text>
+              </View>
+            )}
+          </View>
+        ))
       ) : (
         <View />
       );

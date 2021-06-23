@@ -115,7 +115,7 @@ const SearchListExample = () => {
     <View style={styles.container}>
       <SearchList
         data={dataSource}
-        itemOnPress={item => {
+        itemOnPress={(item) => {
           console.log('Single Item :: ', item);
         }}
         rowHeight={40}

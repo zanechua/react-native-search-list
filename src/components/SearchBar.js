@@ -168,7 +168,8 @@ export default class SearchBar extends Component {
               styles.searchTextInputStyle,
               this.props.showSearchIcon ? '' : { paddingLeft: 8 },
               {
-                color: this.props.searchInputTextColorActive && !this.state.isSearching
+                color:
+                  this.props.searchInputTextColorActive && !this.state.isSearching
                     ? this.props.searchInputTextColorActive
                     : this.props.searchInputTextColor || '#979797'
               },
@@ -184,7 +185,10 @@ export default class SearchBar extends Component {
 
           <Animated.View pointerEvents="none" style={[styles.leftSearchIconStyle]}>
             {this.props.showSearchIcon ? (
-              <Text style={[styles.searchIconStyle, { color: this.props.searchIconColor }]}>{' '}&#x26B2;</Text>
+              <Text style={[styles.searchIconStyle, { color: this.props.searchIconColor }]}>
+                {' '}
+                &#x26B2;
+              </Text>
             ) : null}
           </Animated.View>
         </Animated.View>

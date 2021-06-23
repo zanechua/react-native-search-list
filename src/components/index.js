@@ -9,25 +9,25 @@ import SectionIndexItem from './SectionIndexItem';
 import Theme from './Theme';
 
 export default {
-	SearchBar,
-	Toolbar,
-	SectionIndex,
-	HighlightableText,
-	Theme,
-	Empty,
-	EmptyResult,
-	SectionHeader,
-	SectionIndexItem
+  SearchBar,
+  Toolbar,
+  SectionIndex,
+  HighlightableText,
+  Theme,
+  Empty,
+  EmptyResult,
+  SectionHeader,
+  SectionIndexItem
 };
 
 export {
-	SearchBar,
-	Toolbar,
-	SectionIndex,
-	HighlightableText,
-	Theme,
-	Empty,
-	EmptyResult,
-	SectionHeader,
-	SectionIndexItem
+  SearchBar,
+  Toolbar,
+  SectionIndex,
+  HighlightableText,
+  Theme,
+  Empty,
+  EmptyResult,
+  SectionHeader,
+  SectionIndexItem
 };

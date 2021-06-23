@@ -7,7 +7,8 @@ import {
   Image,
   Platform,
   SectionList,
-  TouchableOpacity, Alert
+  TouchableOpacity,
+  Alert
 } from 'react-native';
 
 import React, { Component } from 'react';
@@ -18,7 +19,7 @@ import { sTrim } from './utils';
 
 import SearchService from './SearchService';
 
-import { 
+import {
   SearchBar,
   Toolbar,
   SectionIndex,
@@ -27,7 +28,7 @@ import {
   Empty,
   EmptyResult,
   SectionHeader,
-  SectionIndexItem,
+  SectionIndexItem
 } from './components';
 
 export default class SearchList extends Component {
@@ -170,7 +171,10 @@ export default class SearchList extends Component {
       const copiedSource = Array.from(data);
       this.setState({ originalListData: copiedSource });
       this.parseInitList(
-        SearchService.sortList(SearchService.initList(copiedSource, searchCursor), this.props.sortFunc)
+        SearchService.sortList(
+          SearchService.initList(copiedSource, searchCursor),
+          this.props.sortFunc
+        )
       );
       resolve();
     });
@@ -224,7 +228,7 @@ export default class SearchList extends Component {
    */
   _renderSectionHeader({ section: { title } }) {
     const { sectionHeaderHeight } = this.props;
-    return <SectionHeader title={title} sectionHeaderHeight={sectionHeaderHeight} />
+    return <SectionHeader title={title} sectionHeaderHeight={sectionHeaderHeight} />;
   }
 
   /**
@@ -235,8 +239,10 @@ export default class SearchList extends Component {
    * @private
    */
   _renderSectionIndexItem(section) {
-    const { colors: { sectionIndexTextColor } } = this.props;
-    return <SectionIndexItem section={section} sectionIndexTextColor={sectionIndexTextColor} />
+    const {
+      colors: { sectionIndexTextColor }
+    } = this.props;
+    return <SectionIndexItem section={section} sectionIndexTextColor={sectionIndexTextColor} />;
   }
 
   /**
@@ -295,18 +301,20 @@ export default class SearchList extends Component {
   _renderRow({ index, item, section }) {
     const { searchCursor, itemOnPress } = this.props;
     return (
-    <TouchableOpacity
-      onPress={() => typeof itemOnPress === 'undefined' ? this.itemOnPress(item) : itemOnPress(item)} >
-      <View style={{ flex: 1, marginLeft: 20, height: 40, justifyContent: 'center' }}>
-        {/* use `HighlightableText` to highlight the search result */}
-        <HighlightableText
-          matcher={item.matcher}
-          text={item[searchCursor]}
-          textColor="#000000"
-          hightlightTextColor="#0069c0"
-        />
-      </View>
-    </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() =>
+          typeof itemOnPress === 'undefined' ? this.itemOnPress(item) : itemOnPress(item)
+        }>
+        <View style={{ flex: 1, marginLeft: 20, height: 40, justifyContent: 'center' }}>
+          {/* use `HighlightableText` to highlight the search result */}
+          <HighlightableText
+            matcher={item.matcher}
+            text={item[searchCursor]}
+            textColor="#000000"
+            hightlightTextColor="#0069c0"
+          />
+        </View>
+      </TouchableOpacity>
     );
   }
 
@@ -458,7 +466,11 @@ export default class SearchList extends Component {
     const { searchCursor, renderEmptyResult, renderEmpty, data } = this.props;
 
     if (isSearching && !isReady && searchStr !== '') {
-      return typeof renderEmptyResult === 'undefined' ? <EmptyResult searchStr={searchStr} /> : renderEmptyResult(searchStr)
+      return typeof renderEmptyResult === 'undefined' ? (
+        <EmptyResult searchStr={searchStr} />
+      ) : (
+        renderEmptyResult(searchStr)
+      );
     }
     if (data && data.length > 0 && isReady) {
       return (
@@ -486,7 +498,9 @@ export default class SearchList extends Component {
         />
       );
     }
-    {typeof renderEmpty === 'undefined' ? <Empty/> : renderEmpty()}
+    {
+      typeof renderEmpty === 'undefined' ? <Empty /> : renderEmpty();
+    }
   }
 
   /**
@@ -593,12 +607,8 @@ export default class SearchList extends Component {
    * @private
    */
   _renderSectionIndex() {
-    const {
-      hideSectionList,
-      toolbarHeight,
-      sectionIndexContainerStyle,
-      renderSectionIndexItem
-    } = this.props;
+    const { hideSectionList, toolbarHeight, sectionIndexContainerStyle, renderSectionIndexItem } =
+      this.props;
     const { isSearching, sectionIds, animatedValue } = this.state;
 
     if (isSearching) {

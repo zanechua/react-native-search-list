@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
 import Theme from '../components/Theme';
 
-
 export default StyleSheet.create({
   emptyContainer: {
     flex: 1,
@@ -25,5 +24,5 @@ export default StyleSheet.create({
   sectionTitle: {
     color: '#979797',
     fontSize: 14
-  },
+  }
 });

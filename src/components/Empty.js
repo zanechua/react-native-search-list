@@ -2,12 +2,10 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import styles from '../styles';
 
-const Empty = () => {
-  return (
-    <View style={styles.emptyContainer}>
-      <Text style={styles.emptyText}>No Content</Text>
-    </View>
-  );
-};
+const Empty = () => (
+  <View style={styles.emptyContainer}>
+    <Text style={styles.emptyText}>No Content</Text>
+  </View>
+);
 
 export default Empty;
